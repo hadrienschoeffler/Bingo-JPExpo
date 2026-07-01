@@ -12,6 +12,7 @@ export default function App() {
     hasSavedGame,
     resetGame,
     score,
+    maxScore,
     toggleCell
   } = useBingoGame();
 
@@ -21,7 +22,7 @@ export default function App() {
 
   return (
     <main className="app-shell">
-      <ScoreBar foundCount={foundCount} score={score} onReset={resetGame} />
+      <ScoreBar foundCount={foundCount} score={score} maxScore={maxScore} onReset={resetGame} />
       <BingoGrid grid={gameState.grid} onToggleCell={toggleCell} />
     </main>
   );

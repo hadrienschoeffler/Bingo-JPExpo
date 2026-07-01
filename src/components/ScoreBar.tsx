@@ -1,10 +1,11 @@
 type ScoreBarProps = {
   foundCount: number;
   score: number;
+  maxScore: number;
   onReset: () => void;
 };
 
-export function ScoreBar({ foundCount, score, onReset }: ScoreBarProps) {
+export function ScoreBar({ foundCount, score, maxScore, onReset }: ScoreBarProps) {
   function handleResetClick() {
     const confirmed = window.confirm(
       'Tu es sûr de vouloir réinitialiser ta grille ? Cette action supprimera ta partie en cours.'
@@ -21,7 +22,7 @@ export function ScoreBar({ foundCount, score, onReset }: ScoreBarProps) {
     <header className="score-bar">
       <div>
         <p className="score-label">Score</p>
-        <strong>{score} pts</strong>
+        <strong>{score} / {maxScore} pts</strong>
       </div>
 
       <div>

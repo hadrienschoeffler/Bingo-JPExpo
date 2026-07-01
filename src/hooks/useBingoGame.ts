@@ -33,6 +33,16 @@ export function useBingoGame() {
     return gameState.grid.filter((cell) => cell.found).length;
   }, [gameState]);
 
+  const maxScore = useMemo(() => {
+    if (!gameState) {
+      return 0;
+    }
+
+    return gameState.grid.reduce((total, cell) => {
+      return total + getCellPoints(cell);
+    }, 0);
+  }, [gameState]);
+
   function generateGame(bonusLabel: string): void {
     try {
       const grid = generateBingoGrid(characters, bonusLabel);
@@ -83,6 +93,7 @@ export function useBingoGame() {
     hasSavedGame: gameState !== null,
     resetGame,
     score,
+    maxScore,
     toggleCell
   };
 }
