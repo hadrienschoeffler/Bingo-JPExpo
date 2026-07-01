@@ -1,0 +1,265 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #181818;
+  background: #f3f0e8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  /* Base volontairement simple : remplace cette couleur par ton futur fond. */
+  --app-bg: #f3f0e8;
+  --surface: #ffffff;
+  --surface-muted: #eeeeea;
+  --text: #181818;
+  --text-muted: #5d5d5d;
+  --border: #d8d4ca;
+  --five-star: #d8a900;
+  --four-star: #7c4dff;
+  --bonus: #2f6f73;
+  --danger: #b42318;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--text);
+  background: var(--app-bg);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+.home-screen,
+.app-shell {
+  width: min(100%, 560px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.home-screen {
+  display: grid;
+  place-items: center;
+}
+
+.hero-card {
+  width: 100%;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+}
+
+.eyebrow,
+.score-label {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0.4rem 0 0.75rem;
+  color: var(--text);
+  font-size: clamp(2rem, 12vw, 4rem);
+  line-height: 0.95;
+}
+
+.hero-description,
+.form-help,
+.offline-note,
+.saved-game-info {
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.bonus-form {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+}
+
+.bonus-form label {
+  font-weight: 700;
+}
+
+.bonus-form input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  outline: none;
+  background: var(--surface);
+}
+
+.bonus-form input:focus {
+  border-color: var(--bonus);
+  box-shadow: 0 0 0 3px rgba(47, 111, 115, 0.16);
+}
+
+.bonus-form button,
+.secondary-button {
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  color: #ffffff;
+  border-radius: 0.6rem;
+  background: #181818;
+  font-weight: 800;
+}
+
+.secondary-button {
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+}
+
+.error-message {
+  margin: 0;
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.score-bar {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+}
+
+.score-bar strong {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.1rem;
+}
+
+.bingo-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(0.35rem, 1.9vw, 0.7rem);
+}
+
+.bingo-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  padding: 0;
+  color: var(--text);
+  border: 3px solid transparent;
+  border-radius: 0.7rem;
+  background: var(--surface);
+  transition: transform 120ms ease, filter 160ms ease, opacity 160ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bingo-cell:active {
+  transform: scale(0.96);
+}
+
+.character-cell.rarity-5 {
+  border-color: var(--five-star);
+}
+
+.character-cell.rarity-4 {
+  border-color: var(--four-star);
+}
+
+.character-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.image-fallback {
+  color: var(--text-muted);
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.bonus-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  justify-content: center;
+  padding: 0.35rem;
+  border-color: var(--bonus);
+  background: var(--surface-muted);
+  text-align: center;
+}
+
+.bonus-star {
+  color: var(--bonus);
+  font-size: clamp(1.1rem, 5vw, 1.7rem);
+  line-height: 1;
+}
+
+.bonus-label {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: clamp(0.58rem, 2.4vw, 0.82rem);
+  font-weight: 800;
+  line-height: 1.05;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.bingo-cell.found {
+  filter: grayscale(1);
+  opacity: 0.42;
+}
+
+.bingo-cell.found::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  content: '✓';
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.28);
+  font-size: clamp(1.4rem, 8vw, 2.5rem);
+  font-weight: 950;
+}
+
+@media (max-width: 390px) {
+  .home-screen,
+  .app-shell {
+    padding: 0.65rem;
+  }
+
+  .score-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .secondary-button {
+    grid-column: 1 / -1;
+  }
+}
