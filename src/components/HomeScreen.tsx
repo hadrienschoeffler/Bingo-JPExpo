@@ -1,18 +1,49 @@
 import { FormEvent, useState } from 'react';
 
+const BONUS_MAX_LENGTH = 40;
+
 type HomeScreenProps = {
   error: string | null;
-  hasSavedGame: boolean;
-  onGenerate: (bonusLabel: string) => void;
+  onCreateCustomGrid: (bonusLabel: string) => void;
+  onGenerateRandomGrid: (bonusLabel: string) => void;
 };
 
-export function HomeScreen({ error, hasSavedGame, onGenerate }: HomeScreenProps) {
+export function HomeScreen({ error, onCreateCustomGrid, onGenerateRandomGrid }: HomeScreenProps) {
   const [bonusLabel, setBonusLabel] = useState('');
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    onGenerate(bonusLabel);
+  function getCleanBonusLabel(): string | null {
+    const cleanBonusLabel = bonusLabel.trim();
+
+    if (!cleanBonusLabel) {
+      return null;
+    }
+
+    return cleanBonusLabel;
   }
+
+  function handleCreateCustomGrid() {
+    const cleanBonusLabel = getCleanBonusLabel();
+
+    if (!cleanBonusLabel) {
+      return;
+    }
+
+    onCreateCustomGrid(cleanBonusLabel);
+  }
+
+  function handleRandomSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const cleanBonusLabel = getCleanBonusLabel();
+
+    if (!cleanBonusLabel) {
+      return;
+    }
+
+    onGenerateRandomGrid(cleanBonusLabel);
+  }
+
+  const canStart = bonusLabel.trim().length > 0;
 
   return (
     <main className="home-screen">
@@ -20,14 +51,13 @@ export function HomeScreen({ error, hasSavedGame, onGenerate }: HomeScreenProps)
         <p className="eyebrow">Japan Expo</p>
         <h1>Cosplay Bingo</h1>
         <p className="hero-description">
-          Génère ta grille, repère les cosplays Genshin Impact, coche les icônes trouvées et marque un maximum de points.
+          Crée ta grille, repère les cosplays Genshin Impact, coche les icônes trouvées et marque un maximum de points.
+        </p>
+        <p className="hero-description">
+          La grille contient 24 personnages Genshin et 1 case bonus que tu choisis avant de commencer.
         </p>
 
-        {hasSavedGame ? (
-          <p className="saved-game-info">Une partie est déjà sauvegardée sur cet appareil.</p>
-        ) : null}
-
-        <form className="bonus-form" onSubmit={handleSubmit}>
+        <form className="bonus-form" onSubmit={handleRandomSubmit}>
           <label htmlFor="bonus-label">Personnage bonus</label>
           <input
             id="bonus-label"
@@ -35,11 +65,20 @@ export function HomeScreen({ error, hasSavedGame, onGenerate }: HomeScreenProps)
             value={bonusLabel}
             onChange={(event) => setBonusLabel(event.target.value)}
             placeholder="Ex. Hatsune Miku, Link, Gojo..."
-            maxLength={40}
+            maxLength={BONUS_MAX_LENGTH}
           />
-          <p className="form-help">Cette case rapporte 5 points si tu trouves le personnage choisi.</p>
+          <p className="form-help">Cette case vaut 5 points. Elle sera placée au centre de la grille.</p>
+
           {error ? <p className="error-message">{error}</p> : null}
-          <button type="submit">Générer ma grille</button>
+
+          <div className="home-actions two-columns">
+            <button type="button" className="primary-button" onClick={handleCreateCustomGrid} disabled={!canStart}>
+              Créer ma grille
+            </button>
+            <button type="submit" className="secondary-action-button" disabled={!canStart}>
+              Grille aléatoire
+            </button>
+          </div>
         </form>
 
         <p className="offline-note">Pense à ouvrir l’application avec Internet avant d’entrer dans la convention.</p>

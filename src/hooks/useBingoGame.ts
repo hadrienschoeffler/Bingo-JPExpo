@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { characters } from '../data/characters';
-import { generateBingoGrid, getCellPoints } from '../services/gridGenerator';
+import { createCustomBingoGrid, generateRandomBingoGrid, getCellPoints } from '../services/gridGenerator';
 import { clearGameState, loadGameState, saveGameState } from '../services/storageService';
 import type { BingoCell, BingoGameState } from '../types/bingo';
 
@@ -25,14 +25,6 @@ export function useBingoGame() {
     }, 0);
   }, [gameState]);
 
-  const foundCount = useMemo(() => {
-    if (!gameState) {
-      return 0;
-    }
-
-    return gameState.grid.filter((cell) => cell.found).length;
-  }, [gameState]);
-
   const maxScore = useMemo(() => {
     if (!gameState) {
       return 0;
@@ -43,17 +35,47 @@ export function useBingoGame() {
     }, 0);
   }, [gameState]);
 
-  function generateGame(bonusLabel: string): void {
+  const foundCount = useMemo(() => {
+    if (!gameState) {
+      return 0;
+    }
+
+    return gameState.grid.filter((cell) => cell.found).length;
+  }, [gameState]);
+
+  function applyGameGrid(grid: BingoCell[]): void {
+    const nextGameState = createGameState(grid);
+    setGameState(nextGameState);
+    saveGameState(nextGameState);
+    setError(null);
+  }
+
+  function generateRandomGame(bonusLabel: string): void {
     try {
-      const grid = generateBingoGrid(characters, bonusLabel);
-      const nextGameState = createGameState(grid);
-      setGameState(nextGameState);
-      saveGameState(nextGameState);
-      setError(null);
+      const grid = generateRandomBingoGrid(characters, bonusLabel);
+      applyGameGrid(grid);
     } catch (generationError) {
       const message = generationError instanceof Error ? generationError.message : 'Erreur inconnue pendant la génération.';
       setError(message);
     }
+  }
+
+  function generateCustomGame(selectedCharacterIds: string[], bonusLabel: string): void {
+    try {
+      const selectedCharacters = selectedCharacterIds
+        .map((characterId) => characters.find((character) => character.id === characterId))
+        .filter((character): character is NonNullable<typeof character> => character !== undefined);
+
+      const grid = createCustomBingoGrid(selectedCharacters, bonusLabel);
+      applyGameGrid(grid);
+    } catch (generationError) {
+      const message = generationError instanceof Error ? generationError.message : 'Erreur inconnue pendant la création de la grille.';
+      setError(message);
+    }
+  }
+
+  function clearError(): void {
+    setError(null);
   }
 
   function toggleCell(cellId: string): void {
@@ -86,14 +108,17 @@ export function useBingoGame() {
   }
 
   return {
+    allCharacters: characters,
+    clearError,
     error,
     foundCount,
     gameState,
-    generateGame,
+    generateCustomGame,
+    generateRandomGame,
     hasSavedGame: gameState !== null,
+    maxScore,
     resetGame,
     score,
-    maxScore,
     toggleCell
   };
 }
