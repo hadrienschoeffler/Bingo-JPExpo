@@ -54,7 +54,7 @@ export function HomeScreen({ error, onCreateCustomGrid, onGenerateRandomGrid }: 
           Crée ta grille, repère les cosplays Genshin Impact, coche les icônes trouvées et marque un maximum de points.
         </p>
         <p className="hero-description">
-          La grille contient 24 personnages Genshin, jouables ou spéciaux, et 1 case bonus que tu choisis avant de commencer.
+          La grille contient 24 personnages Genshin, jouables ou spéciaux, et 1 case bonus que tu choisis avant de commencer. En aléatoire, l’application tire entre 0 et 3 personnages spéciaux, puis complète avec des personnages jouables.
         </p>
 
         <form className="bonus-form" onSubmit={handleRandomSubmit}>
