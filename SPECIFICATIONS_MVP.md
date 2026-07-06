@@ -1,87 +1,152 @@
-# Spécifications MVP — Cosplay Bingo
+# Spécifications fonctionnelles et techniques — Bingo JP Expo v1.0
 
-## Objectif
+## 1. Objectif
 
-Créer une application Web mobile-first permettant de jouer à un bingo cosplay pendant une sortie à la Japan Expo.
+Créer une application Web mobile permettant de jouer à un bingo cosplay pendant la Japan Expo. Le joueur prépare une grille de personnages, coche ceux qu’il croise en cosplay et suit son score.
 
-Le joueur génère une grille, choisit une case bonus, puis coche les personnages vus en cosplay. Le score est mis à jour automatiquement et la progression est sauvegardée localement.
+L’application doit être simple, utilisable sur téléphone et adaptée à un environnement avec une connexion instable.
 
-## Périmètre MVP
+## 2. Périmètre v1.0
 
-Inclus :
+La version 1.0 contient :
 
-- Grille 5 × 5.
-- 24 cases personnages Genshin Impact.
-- 1 case bonus personnalisée.
-- Génération aléatoire équilibrée.
-- Score automatique.
-- Sauvegarde locale.
-- Interface mobile.
-- Préparation offline/PWA.
+- une page d’accueil ;
+- une saisie de personnage bonus ;
+- un mode de création manuelle ;
+- un mode de génération aléatoire ;
+- une grille 5 × 5 ;
+- une sauvegarde locale ;
+- un score actuel et un score maximum ;
+- une confirmation avant réinitialisation ;
+- une préparation PWA/offline.
 
-Exclu du MVP :
+La version 1.0 ne contient pas :
 
-- Comptes utilisateurs.
-- Backend.
-- Base de données distante.
-- Classement entre amis.
-- Limitation du nombre de générations.
-- Vérification photo.
-- Interface d'administration.
+- compte utilisateur ;
+- backend ;
+- classement en ligne ;
+- synchronisation entre appareils ;
+- anti-triche ;
+- interface d’administration.
 
-## Règles de génération
+## 3. Règles de jeu
 
-La grille contient 25 cases :
+Chaque joueur dispose d’une grille de 25 cases :
 
-- 14 personnages 5★.
-- 10 personnages 4★.
-- 1 case bonus placée au centre.
+- 24 cases de personnages Genshin Impact ;
+- 1 case bonus choisie par le joueur.
 
-Les personnages doivent être uniques dans une même grille.
+Quand le joueur croise un cosplay correspondant à une case, il appuie sur l’icône. La case passe en état trouvé et le score augmente. Un second appui annule le marquage.
 
-## Affichage
+## 4. Personnages
 
-Chaque case personnage affiche uniquement :
+Un personnage possède :
 
-- l'icône du personnage ;
-- un contour jaune pour les 5★ ;
-- un contour violet pour les 4★.
+- un identifiant unique ;
+- un nom ;
+- un jeu ;
+- une rareté ;
+- un nombre de points ;
+- un chemin d’image.
 
-Les noms et les points ne sont pas affichés dans la case pour garder une interface lisible sur téléphone.
+Raretés supportées :
 
-## Case bonus
+- `5` : personnage 5★ ;
+- `4` : personnage 4★ ;
+- `'special'` : personnage non jouable, pas encore jouable ou sans rareté officielle.
 
-Le joueur saisit lui-même le personnage bonus avant la génération.
+## 5. Affichage
 
-La case bonus :
+Les cases personnages affichent uniquement l’icône.
 
-- est placée au centre de la grille ;
-- rapporte 5 points ;
-- peut être cochée/décochée comme les autres cases.
+La rareté est indiquée par le contour :
 
-## État trouvé
+- jaune pour les 5★ ;
+- violet pour les 4★ ;
+- gris pour les spéciaux.
 
-Un tap sur une case change son état :
+Une case trouvée est grisée.
 
-- non trouvé → trouvé ;
-- trouvé → non trouvé.
+La case bonus est placée au centre de la grille et rapporte 5 points.
 
-Une case trouvée est grisée et affiche une coche.
+## 6. Création manuelle
 
-## Score
+L’utilisateur doit sélectionner exactement 24 personnages.
 
-Le score correspond à la somme des points des cases trouvées.
+L’écran de sélection contient :
 
-Les points des personnages sont définis dans `src/data/characters.ts`.
+- recherche par nom ;
+- onglet des personnages disponibles ;
+- onglet des personnages choisis ;
+- tri par ordre alphabétique ;
+- tri par catégorie ;
+- tri par points ;
+- compteurs 5★, 4★, spéciaux, total et score maximum.
 
-## Persistance locale
+Le bouton de validation est désactivé tant que les 24 personnages ne sont pas sélectionnés.
 
-L'application sauvegarde dans `localStorage` :
+## 7. Génération aléatoire
 
-- la grille générée ;
-- l'état trouvé/non trouvé ;
-- la date de création.
+Le mode aléatoire doit générer 24 personnages sans doublon.
 
-## Fonctionnement hors connexion
+Règle v1.0 :
 
-L'application est préparée comme PWA. Après un premier chargement avec connexion, elle doit pouvoir être utilisée hors connexion avec les fichiers mis en cache.
+- tirer un nombre de spéciaux entre 0 et 3 ;
+- compléter le reste avec des personnages jouables ;
+- garder une logique proche de 60 % de 5★ et 40 % de 4★ sur les personnages jouables ;
+- ajouter la case bonus au centre.
+
+## 8. Score
+
+Le score actuel est la somme des points des cases trouvées.
+
+Le score maximum est la somme des points de toutes les cases de la grille.
+
+Affichage :
+
+```txt
+Score actuel / Score maximum pts
+```
+
+## 9. Sauvegarde
+
+La grille et la progression sont sauvegardées dans `localStorage`.
+
+Clé utilisée :
+
+```txt
+cosplay-bingo-game-state
+```
+
+## 10. Contraintes techniques
+
+Stack :
+
+- React ;
+- TypeScript ;
+- Vite ;
+- CSS ;
+- Vite PWA ;
+- localStorage.
+
+Déploiement cible :
+
+- Render Static Site ;
+- build command : `npm run build` ;
+- publish directory : `dist`.
+
+## 11. Critères d’acceptation
+
+La version 1.0 est validée si :
+
+- l’utilisateur peut créer une grille manuelle ;
+- l’utilisateur peut générer une grille aléatoire ;
+- la grille contient toujours 25 cases ;
+- la case bonus est obligatoire et placée au centre ;
+- les personnages spéciaux sont supportés ;
+- le mode aléatoire peut inclure entre 0 et 3 spéciaux ;
+- le score actuel et le score maximum sont affichés ;
+- les cases trouvées sont grisées ;
+- la réinitialisation demande une confirmation ;
+- la progression est conservée après actualisation ;
+- le build fonctionne pour un déploiement statique.
