@@ -123,4 +123,16 @@ export const characters: Character[] = [
   { id: 'yanfei', name: 'Yanfei', game: 'Genshin Impact', rarity: 4, points: 3, image: '/characters/Yanfei_Icon.webp' },
   { id: 'yaoyao', name: 'Yaoyao', game: 'Genshin Impact', rarity: 4, points: 2, image: '/characters/Yaoyao_Icon.webp' },
   { id: 'yun-jin', name: 'Yun Jin', game: 'Genshin Impact', rarity: 4, points: 2, image: '/characters/Yun_Jin_Icon.webp' },
+
+  // Spéciaux
+  { id: 'signora', name: 'La Signora', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Signora_Icon.webp' },
+  { id: 'pierro', name: 'Pierro', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Pierro_Icon.webp' },
+  { id: 'capitano', name: 'Capitano', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Capitano_Icon.webp' },
+  { id: 'pulcinella', name: 'Pulcinella', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Pulcinella_Icon.webp' },
+  { id: 'dottore', name: 'Dottore', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Dottore_Icon.webp' },
+  { id: 'jeht', name: 'Jeht', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Jeht_Icon.webp' },
+  { id: 'rhinedottir', name: 'Rhinedottir', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Rhinedottir_Icon.webp' },
+  { id: 'ronova', name: 'Ronova', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Ronova_Icon.webp' },
+  { id: 'istaroth', name: 'Istaroth', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Istaroth_Icon.webp' },
+  { id: 'asmoday', name: 'Asmodée', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Asmoday_Icon.webp' },
 ];

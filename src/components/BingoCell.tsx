@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { getCellPoints } from '../services/gridGenerator';
 import type { BingoCell as BingoCellType } from '../types/bingo';
 
+const rarityLabel = {
+  5: '5 étoiles',
+  4: '4 étoiles',
+  special: 'spécial'
+} as const;
+
 type BingoCellProps = {
   cell: BingoCellType;
   onToggle: (cellId: string) => void;
@@ -30,7 +36,7 @@ export function BingoCell({ cell, onToggle }: BingoCellProps) {
       type="button"
       className={`bingo-cell character-cell rarity-${cell.character.rarity} ${cell.found ? 'found' : ''}`}
       onClick={() => onToggle(cell.id)}
-      aria-label={`${cell.character.name}, ${cell.character.rarity} étoiles, ${points} points`}
+      aria-label={`${cell.character.name}, personnage ${rarityLabel[cell.character.rarity]}, ${points} points`}
       title={`${cell.character.name} • ${points} pts`}
     >
       {!imageError ? (

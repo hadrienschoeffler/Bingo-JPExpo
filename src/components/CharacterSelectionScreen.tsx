@@ -1,9 +1,21 @@
 import { useMemo, useState } from 'react';
-import { BONUS_POINTS, FIVE_STAR_COUNT, FOUR_STAR_COUNT } from '../services/gridGenerator';
-import type { Character } from '../types/bingo';
+import { BONUS_POINTS, CHARACTER_CELL_COUNT } from '../services/gridGenerator';
+import type { Character, Rarity } from '../types/bingo';
 
 type SelectionTab = 'available' | 'selected';
 type SortMode = 'alphabetical' | 'rarity' | 'points';
+
+const rarityOrder: Record<Rarity, number> = {
+  5: 0,
+  4: 1,
+  special: 2
+};
+
+const rarityLabel: Record<Rarity, string> = {
+  5: '5★',
+  4: '4★',
+  special: 'Spécial'
+};
 
 type CharacterSelectionScreenProps = {
   bonusLabel: string;
@@ -25,8 +37,9 @@ export function CharacterSelectionScreen({ bonusLabel, characters, error, onBack
 
   const selectedFiveStars = selectedCharacters.filter((character) => character.rarity === 5).length;
   const selectedFourStars = selectedCharacters.filter((character) => character.rarity === 4).length;
-  const isSelectionComplete = selectedFiveStars === FIVE_STAR_COUNT && selectedFourStars === FOUR_STAR_COUNT;
+  const selectedSpecialCharacters = selectedCharacters.filter((character) => character.rarity === 'special').length;
   const selectedCount = selectedCharacters.length;
+  const isSelectionComplete = selectedCount === CHARACTER_CELL_COUNT;
   const selectedMaxScore = selectedCharacters.reduce((total, character) => total + character.points, BONUS_POINTS);
 
   const displayedCharacters = useMemo(() => {
@@ -42,7 +55,7 @@ export function CharacterSelectionScreen({ bonusLabel, characters, error, onBack
 
     return [...filteredCharacters].sort((firstCharacter, secondCharacter) => {
       if (sortMode === 'rarity') {
-        return secondCharacter.rarity - firstCharacter.rarity || firstCharacter.name.localeCompare(secondCharacter.name);
+        return rarityOrder[firstCharacter.rarity] - rarityOrder[secondCharacter.rarity] || firstCharacter.name.localeCompare(secondCharacter.name);
       }
 
       if (sortMode === 'points') {
@@ -61,11 +74,7 @@ export function CharacterSelectionScreen({ bonusLabel, characters, error, onBack
       return;
     }
 
-    if (character.rarity === 5 && selectedFiveStars >= FIVE_STAR_COUNT) {
-      return;
-    }
-
-    if (character.rarity === 4 && selectedFourStars >= FOUR_STAR_COUNT) {
+    if (selectedCount >= CHARACTER_CELL_COUNT) {
       return;
     }
 
@@ -95,10 +104,11 @@ export function CharacterSelectionScreen({ bonusLabel, characters, error, onBack
           </div>
 
           <div className="selection-counts" aria-label="Compteurs de sélection">
-            <span className={selectedFiveStars === FIVE_STAR_COUNT ? 'complete' : ''}>5★ : {selectedFiveStars}/{FIVE_STAR_COUNT}</span>
-            <span className={selectedFourStars === FOUR_STAR_COUNT ? 'complete' : ''}>4★ : {selectedFourStars}/{FOUR_STAR_COUNT}</span>
+            <span>5★ : {selectedFiveStars}</span>
+            <span>4★ : {selectedFourStars}</span>
+            <span>Spéciaux : {selectedSpecialCharacters}</span>
             <span>Score max : {selectedMaxScore} pts</span>
-            <span>Total : {selectedCount}/{FIVE_STAR_COUNT + FOUR_STAR_COUNT}</span>
+            <span className={isSelectionComplete ? 'complete' : ''}>Total : {selectedCount}/{CHARACTER_CELL_COUNT}</span>
           </div>
         </div>
 
@@ -120,7 +130,7 @@ export function CharacterSelectionScreen({ bonusLabel, characters, error, onBack
               onChange={(event) => setSortMode(event.target.value as SortMode)}
             >
               <option value="alphabetical">Ordre alphabétique</option>
-              <option value="rarity">Rareté</option>
+              <option value="rarity">Catégorie</option>
               <option value="points">Points</option>
             </select>
           </div>
@@ -153,10 +163,7 @@ export function CharacterSelectionScreen({ bonusLabel, characters, error, onBack
           {displayedCharacters.length > 0 ? (
             displayedCharacters.map((character) => {
               const isSelected = selectedIds.includes(character.id);
-              const quotaReached =
-                !isSelected &&
-                ((character.rarity === 5 && selectedFiveStars >= FIVE_STAR_COUNT) ||
-                  (character.rarity === 4 && selectedFourStars >= FOUR_STAR_COUNT));
+              const quotaReached = !isSelected && selectedCount >= CHARACTER_CELL_COUNT;
 
               return (
                 <button
@@ -166,13 +173,13 @@ export function CharacterSelectionScreen({ bonusLabel, characters, error, onBack
                   onClick={() => toggleCharacter(character)}
                   disabled={quotaReached}
                   aria-pressed={isSelected}
-                  title={`${character.name} • ${character.points} pts`}
+                  title={`${character.name} • ${rarityLabel[character.rarity]} • ${character.points} pts`}
                 >
                   <span className="selection-image-frame">
                     <img src={character.image} alt={character.name} draggable="false" />
                   </span>
                   <span className="selection-character-name">{character.name}</span>
-                  <span className="selection-character-points">{character.points} pts</span>
+                  <span className="selection-character-points">{rarityLabel[character.rarity]} • {character.points} pts</span>
                 </button>
               );
             })

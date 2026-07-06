@@ -16,6 +16,7 @@
   --border: #d8d4ca;
   --five-star: #d8a900;
   --four-star: #7c4dff;
+  --special: #6f6f6f;
   --bonus: #2f6f73;
   --danger: #b42318;
 }
@@ -245,6 +246,11 @@ h1 {
 .character-cell.rarity-4,
 .selection-card.rarity-4 {
   border-color: var(--four-star);
+}
+
+.character-cell.rarity-special,
+.selection-card.rarity-special {
+  border-color: var(--special);
 }
 
 .character-cell img {

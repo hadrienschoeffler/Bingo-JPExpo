@@ -1,4 +1,4 @@
-export type Rarity = 4 | 5;
+export type Rarity = 4 | 5 | 'special';
 
 export type Character = {
   id: string;

@@ -88,3 +88,17 @@ Les personnages sont uniques dans une même grille.
 - Ajouter une base SQL Server.
 - Ajouter des tests unitaires sur la génération.
 - Dockeriser le projet.
+
+
+## Génération aléatoire avec personnages spéciaux
+
+Le mode aléatoire tire désormais sur l’ensemble du roster : personnages 5★, personnages 4★ et personnages `special`.
+
+Règle actuelle :
+
+- entre 0 et 3 personnages spéciaux, tirés aléatoirement ;
+- le reste de la grille est rempli avec des personnages jouables ;
+- les personnages jouables gardent une logique proche de 60 % de 5★ et 40 % de 4★ ;
+- s’il n’y a aucun personnage spécial ou si le tirage tombe sur 0, le mode aléatoire revient automatiquement à une grille jouable classique proche de 14 cinq étoiles et 10 quatre étoiles.
+
+Ces valeurs sont configurables dans `src/services/gridGenerator.ts`.
