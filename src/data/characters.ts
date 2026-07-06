@@ -29,7 +29,7 @@ export const characters: Character[] = [
   { id: 'ganyu', name: 'Ganyu', game: 'Genshin Impact', rarity: 5, points: 1, image: '/characters/Ganyu_Icon.webp' },
   { id: 'hu-tao', name: 'Hu Tao', game: 'Genshin Impact', rarity: 5, points: 1, image: '/characters/Hu_Tao_Icon.webp' },
   { id: 'ineffa', name: 'Ineffa', game: 'Genshin Impact', rarity: 5, points: 2, image: '/characters/Ineffa_Icon.webp' },
-  { id: 'jean', name: 'Jean', game: 'Genshin Impact', rarity: 5, points: 4, image: '/characters/Jean_Icon.webp' },
+  { id: 'jean', name: 'Jean', game: 'Genshin Impact', rarity: 5, points: 1, image: '/characters/Jean_Icon.webp' },
   { id: 'kaedehara-kazuha', name: 'Kaedehara Kazuha', game: 'Genshin Impact', rarity: 5, points: 1, image: '/characters/Kaedehara_Kazuha_Icon.webp' },
   { id: 'kamisato-ayaka', name: 'Kamisato Ayaka', game: 'Genshin Impact', rarity: 5, points: 1, image: '/characters/Kamisato_Ayaka_Icon.webp' },
   { id: 'kamisato-ayato', name: 'Kamisato Ayato', game: 'Genshin Impact', rarity: 5, points: 1, image: '/characters/Kamisato_Ayato_Icon.webp' },
