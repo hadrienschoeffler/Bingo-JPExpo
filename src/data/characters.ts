@@ -135,4 +135,6 @@ export const characters: Character[] = [
   { id: 'ronova', name: 'Ronova', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Ronova_Icon.webp' },
   { id: 'istaroth', name: 'Istaroth', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Istaroth_Icon.webp' },
   { id: 'asmoday', name: 'Asmodée', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Asmoday_Icon.webp' },
-];
+  { id: 'rerir', name: 'Rerir', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Rerir_Icon.webp' },
+  { id: 'paimon', name: 'Paimon', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Paimon_Icon.webp' },
+  { id: 'primo-gemme', name: 'Primo-gemme', game: 'Genshin Impact', rarity: 'special', points: 3, image: '/characters/Primo-gemme_Icon.webp' },
